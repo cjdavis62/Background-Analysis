@@ -333,7 +333,9 @@ RooRealVar x("x", "x", 0, 6000);
     Towers_Po210_hist->SetTitle("Po210 Rates by Tower and Floor");
     Towers_Po210_hist->GetXaxis()->SetTitle("Tower [DAQ]");
     Towers_Po210_hist->GetYaxis()->SetTitle("Floor");
-  
+
+    Towers_Po210_hist->GetXaxis()->SetNdivisions(210, kTRUE);
+    Towers_Po210_hist->GetYaxis()->SetNdivisions(210, kTRUE);
 
     /*
       c1->SaveAs("FloorAnalysis/Po210_sum.pdf");
