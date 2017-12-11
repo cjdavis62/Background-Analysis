@@ -99,7 +99,7 @@ int AnalyzePo210ByTower() {
 
 
   x.setRange(5250, 5500);
-  RooDataHist dataPo210("dataPo210", "Co-60", x, Po210);
+  RooDataHist dataPo210("dataPo210", "Po-210", x, Po210);
   RooPlot * framePo210 = x.frame(Title("Po210"));
 
   //subgaussfrac.setVal(0.99);
@@ -107,17 +107,17 @@ int AnalyzePo210ByTower() {
   
   mean.setVal(5340);
   mean.setRange(5300, 5400);
-  sigma.setVal(3);
+  sigma.setVal(7);
 
   mean2.setVal(5440);
   mean2.setRange(5430,5450);
-  sigma2.setVal(3);
+  sigma2.setVal(7);
 
   mean3.setVal(5310);
   mean3.setRange(5300, 5335);
-  sigma3.setVal(1);
+  sigma3.setVal(15);
   
-  a0.setVal(50);
+  a0.setVal(0.1);
   a0.setRange(0,100);
 
   TCanvas * c1 = new TCanvas();
@@ -144,6 +144,9 @@ int AnalyzePo210ByTower() {
   double TowerError[19];
   double signal_tower[19];
   double integral_tower[19];
+
+  double FirstPeak_Rate[19];
+  double SecondPeak_Rate[19];
 
   //TH1F *Po210_tower[19];
   RooPlot * framePo210_tower[19];
@@ -210,10 +213,14 @@ int AnalyzePo210ByTower() {
       double signalerror = peakfrac.getError();
 
       integral_tower[tower-1] = Po210->Integral();
-            
+   
       Rate[tower-1] = signal_tower[tower-1] * Po210->Integral();
+      FirstPeak_Rate[tower-1] = peakfrac.getVal() * (1 - subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral();
+      SecondPeak_Rate[tower-1] = peakfrac.getVal() * (subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral();
+
+      
       Tower[tower-1] = tower;
-      RateError[tower-1] = signalerror * Po210->Integral();
+      RateError[tower-1] = sqrt(pow(signalerror * Po210->Integral(), 2) + pow(sqrt(Po210->Integral()) * signal, 2));
       TowerError[tower-1] = 0;
     }
 
@@ -230,22 +237,34 @@ int AnalyzePo210ByTower() {
 
   int n = 19;
   TGraphErrors * RatesByTower = new TGraphErrors(n, Tower, Rate, TowerError, RateError);
+  TGraphErrors * RatesByTower_FirstPeak = new TGraphErrors(n, Tower, FirstPeak_Rate, TowerError, RateError);
+  TGraphErrors * RatesByTower_SecondPeak = new TGraphErrors(n, Tower, SecondPeak_Rate, TowerError, RateError);
 
   TCanvas * c3 = new TCanvas();
   c3->cd();
   RatesByTower->Draw("APE");
+  RatesByTower_FirstPeak->Draw("PSame");
+  RatesByTower_SecondPeak->Draw("PSame");
+  RatesByTower_FirstPeak->SetMarkerColor(kCyan);
+  RatesByTower_FirstPeak->SetLineColor(kCyan);
+  RatesByTower_SecondPeak->SetMarkerColor(kMagenta);
+  RatesByTower_SecondPeak->SetLineColor(kMagenta);
+
+  
   RatesByTower->SetTitle("Po210 Rates by Tower");
   RatesByTower->GetXaxis()->SetRangeUser(0,20);
   RatesByTower->GetXaxis()->SetNdivisions(210,kTRUE);
   RatesByTower->GetXaxis()->SetTitle("Tower");
   RatesByTower->GetYaxis()->SetTitle("Events");
   RatesByTower->GetYaxis()->SetTitleOffset(1.3);
+  RatesByTower->GetYaxis()->SetRangeUser(0, 7500);
   c3->SetGridy();
 
   cout << signal << endl;
 
 
   //Save plots
+  /*
   c1->SaveAs("TowerAnalysis/Po210_sum.pdf");
   c1->SaveAs("TowerAnalysis/Po210_sum.C");
   c2->SaveAs("TowerAnalysis/Po210_towers.pdf");
@@ -254,6 +273,6 @@ int AnalyzePo210ByTower() {
   c3->SaveAs("TowerAnalysis/Po210_rates.C");
   c4->SaveAs("TowerAnalysis/Po210_tower0.pdf");
   c4->SaveAs("TowerAnalysis/Po210_Tower0.C");
-
+  */
   
 }
