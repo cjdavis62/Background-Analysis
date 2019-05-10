@@ -36,17 +36,45 @@ using namespace RooFit;
 
 int AnalyzeK40ByTower() {
 
+  //get livetimes
+  double livetimes[989]={0};
+  // grab livetime info from txt file
+  ifstream inFile;
+  inFile.open("livetimes_2nu_2019.dat");
+  std::string line;
+  while (std::getline(inFile, line))
+    {
+      std::istringstream iss(line);
+      int channel;
+      double livetime;
+      if (!(iss >> channel >> livetime)) break;
+      else {
+	cout << channel << "\t" << livetime << endl;
+	livetimes[channel] += livetime;
+      }
+    }
+
+  // get livetimes on each tower
+  double livetime_tower[19] = {0};
+  for (int channel = 0; channel < 988; channel++)
+    {
+      int tower_proxy = floor(channel/52.0);
+      livetime_tower[tower_proxy] += livetimes[channel+1];
+    }
+  
+  
   int nbins = 1000;
   int K40start = 1000;
   int K40end = 2000;
 
-  TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  //TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  TFile * f1 = new TFile("/projects/cuore/data/TwoNu_DataRelease_Jan2019/Reduced_allDS_aggressive.root");
   TTree * t1 = (TTree*)f1->Get("outTree");
   
   TH1F* K40 = new TH1F("K40", "K40", nbins, K40start, K40end);
 
     
-  TCut cutK40 = "Energy < 1550 && Energy > 1350";
+  TCut cutK40 = "Energy < 1550 && Energy > 1350 && Included == 1";
   
   t1->Draw("Energy >> K40", cutK40, "goff");
 
@@ -130,11 +158,13 @@ int AnalyzeK40ByTower() {
   double signal_tower[19];
   double signalerror_tower[19];
   double integral_tower[19];
-
+  
+  
   RooPlot * frameK40_tower[19];
   
   TCanvas *c2 = new TCanvas();
   c2->Divide(5,4);
+
   
   for (int tower = 1; tower <= 19; tower++)
     {
@@ -180,7 +210,7 @@ int AnalyzeK40ByTower() {
 
       frameK40_tower[tower-1]->Draw();
       frameK40_tower[tower-1]->GetXaxis()->SetTitle("Energy");
-      frameK40_tower[tower-1]->GetYaxis()->SetRangeUser(0,80);
+      frameK40_tower[tower-1]->GetYaxis()->SetRangeUser(0,220);
       
       double linear = a1.getVal();
       double flat = a0.getVal();
@@ -189,9 +219,9 @@ int AnalyzeK40ByTower() {
 
       integral_tower[tower-1] = K40->Integral();
       
-      Rate[tower-1] = signal_tower[tower-1] * K40->Integral();
+      Rate[tower-1] = signal_tower[tower-1] * K40->Integral() / livetime_tower[tower-1];
       Tower[tower-1] = tower;
-      RateError[tower-1] = signalerror_tower[tower-1] * K40->Integral();
+      RateError[tower-1] = signalerror_tower[tower-1] * K40->Integral() / livetime_tower[tower-1];
       TowerError[tower-1] = 0;
     }
 
@@ -204,7 +234,7 @@ int AnalyzeK40ByTower() {
 
   for (int j = 0; j < 19; j++)
     {
-      cout << "tower: " << j+1 << " Events: " << integral_tower[j] << " Signal: " << signal_tower[j] << " Error: " << signalerror_tower[j] << endl; 
+      cout << "tower: " << j+1 << " Events: " << integral_tower[j] << " Signal: " << signal_tower[j] << " Error: " << signalerror_tower[j] << "livetime: " << livetime_tower[j] << endl; 
     }
   
   int n = 19;
@@ -222,13 +252,13 @@ int AnalyzeK40ByTower() {
   c3->SetGridy();
 
 
-  c1->SaveAs("TowerAnalysis/K40_sum.pdf");
-  c1->SaveAs("TowerAnalysis/K40_sum.C");
-  c2->SaveAs("TowerAnalysis/K40_towers.pdf");
-  c2->SaveAs("TowerAnalysis/K40_towers.C");
-  c3->SaveAs("TowerAnalysis/K40_rates.pdf");
-  c3->SaveAs("TowerAnalysis/K40_rates.C");
-  c4->SaveAs("TowerAnalysis/K40_tower0.pdf");
-  c4->SaveAs("TowerAnalysis/K40_tower0.C");
+  //c1->SaveAs("TowerAnalysis/K40_sum.pdf");
+  //c1->SaveAs("TowerAnalysis/K40_sum.C");
+  //c2->SaveAs("TowerAnalysis/K40_towers.pdf");
+  //c2->SaveAs("TowerAnalysis/K40_towers.C");
+  //c3->SaveAs("TowerAnalysis/K40_rates.pdf");
+  //c3->SaveAs("TowerAnalysis/K40_rates.C");
+  //c4->SaveAs("TowerAnalysis/K40_tower0.pdf");
+  //c4->SaveAs("TowerAnalysis/K40_tower0.C");
 
 }

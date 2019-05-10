@@ -47,7 +47,6 @@ void set_plot_style()
     gStyle->SetNumberContours(NCont);
     */
 
-  /*
   const Int_t Number = 3;
    Double_t Red[Number]    = { 1.00, 1.00, 0.00};
    Double_t Green[Number]  = { 0.00, 1.00, 0.00};
@@ -56,15 +55,15 @@ void set_plot_style()
    Int_t nb=50;
    TColor::CreateGradientColorTable(Number,Length,Red,Green,Blue,nb);
    gStyle->SetNumberContours(nb);
-  */
-  
+
+   /*  
   Double_t stops[9] = { 0.00, 0.125, 0.250, 0.375, 0.500, 0.625, 0.750, 0.875, 1.000 };
   Double_t red[9]   = { 0.2082, 0.0592, 0.0780, 0.0232, 0.1802, 0.5301, 0.8186, 0.9956, 0.9764};
   Double_t green[9] = { 0.1664, 0.3599, 0.5041, 0.6419, 0.7178, 0.7492, 0.7328, 0.7862, 0.9832};
   Double_t blue[9]  = { 0.5293, 0.8684, 0.8385, 0.7914, 0.6425, 0.4662, 0.3499, 0.1968, 0.0539};
   TColor::CreateGradientColorTable(9, stops, red, green, blue, 50);
   gStyle->SetNumberContours(50);
-  
+   */
 }
 
 int AnalyzePo210AllTowers() {
@@ -75,14 +74,15 @@ int AnalyzePo210AllTowers() {
   int Po210start = 5000;
   int Po210end = 6000;
 
-  TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  //TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  TFile * f1 = new TFile("/projects/cuore/data/TwoNu_DataRelease_Jan2019/Reduced_allDS_aggressive.root");
   TTree * t1 = (TTree*)f1->Get("outTree");
   
   TH1F* Po210 = new TH1F("Po210", "Po210", nbins, Po210start, Po210end);
 
   TH2F* Towers_Po210_hist = new TH2F("Towers_Po210_hist", "Towers_Po210_hist", 19, 1, 20, 13, 1, 14);
     
-  TCut cutPo210 = "Energy < 5500 && Energy > 5250";
+  TCut cutPo210 = "Energy < 5500 && Energy > 5250 && Included == 1";
   
   t1->Draw("Energy >> Po210", cutPo210, "goff");
   
@@ -189,23 +189,22 @@ RooRealVar x("x", "x", 0, 6000);
   //TCanvas *c2 = new TCanvas();
   //c2->Divide(5,3);
 
-  double livetimes[988]={0};
+  double livetimes[989]={0};
   // grab livetime info from txt file
   ifstream inFile;
-  inFile.open("exposures.txt");
+  inFile.open("livetimes_2nu_2019.dat");
   std::string line;
   while (std::getline(inFile, line))
     {
       std::istringstream iss(line);
-      int channel, ds;
+      int channel;
       double livetime;
-      if (!(iss >> channel >> ds >> livetime)) break;
+      if (!(iss >> channel >> livetime)) break;
       else {
-	cout << channel << "\t" << ds << "\t" << livetime << endl;
+	cout << channel << "\t" << livetime << endl;
 	livetimes[channel] += livetime;
       }
     }
-
   const int tower_floor = 13 * 19;
   double livetimes_towerfloor[tower_floor]={0};
   // turn into livetime by tower and floor
@@ -290,14 +289,16 @@ RooRealVar x("x", "x", 0, 6000);
 
 	  towerfloor = 13 * (tower-1) + (floor-1);
 	  Rate[floor-1] = Po210->Integral() / livetimes_towerfloor[towerfloor];
-	  FirstPeak_Rate[floor-1] = peakfrac.getVal() * (1 - subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral();
-	  SecondPeak_Rate[floor-1] = peakfrac.getVal() * (subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral();
+	  FirstPeak_Rate[floor-1] = (peakfrac.getVal() * (1 - subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral()) / livetimes_towerfloor[towerfloor];
+	  SecondPeak_Rate[floor-1] = (peakfrac.getVal() * (subgaussfrac.getVal() * (1 - cball1frac.getVal())) * Po210->Integral()) / livetimes_towerfloor[towerfloor];
 
 	  Floor[floor-1] = floor;
-	  RateError[floor-1] = sqrt(Po210->Integral());
+	  RateError[floor-1] = sqrt(Po210->Integral()) / livetimes_towerfloor[towerfloor];
 	  FloorError[floor-1] = 0;
 
-	  Towers_Po210_hist->Fill(tower, floor, Rate[floor-1]);
+	  Towers_Po210_hist->Fill(tower, floor, FirstPeak_Rate[floor-1] / SecondPeak_Rate[floor-1]);
+	  Towers_Po210_hist->SetMinimum(0);
+	  Towers_Po210_hist->SetMaximum(6);
 	}
     }
   

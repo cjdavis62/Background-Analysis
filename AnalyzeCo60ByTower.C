@@ -36,17 +36,47 @@ using namespace RooFit;
 
 int AnalyzeCo60ByTower() {
 
+
+ //get livetimes
+  double livetimes[989]={0};
+  // grab livetime info from txt file
+  ifstream inFile;
+  inFile.open("livetimes_2nu_2019.dat");
+  std::string line;
+  while (std::getline(inFile, line))
+    {
+      std::istringstream iss(line);
+      int channel;
+      double livetime;
+      if (!(iss >> channel >> livetime)) break;
+      else {
+	cout << channel << "\t" << livetime << endl;
+	livetimes[channel] += livetime;
+      }
+    }
+
+  // get livetimes on each tower
+  double livetime_tower[19] = {0};
+  for (int channel = 0; channel < 988; channel++)
+    {
+      int tower_proxy = floor(channel/52.0);
+      livetime_tower[tower_proxy] += livetimes[channel+1];
+    }
+
+  
   int nbins = 1000;
   int Co60start = 1000;
   int Co60end = 2000;
 
-  TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  //TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  TFile * f1 = new TFile("/projects/cuore/data/TwoNu_DataRelease_Jan2019/Reduced_allDS_aggressive.root");
+
   TTree * t1 = (TTree*)f1->Get("outTree");
   
   TH1F* Co60 = new TH1F("Co60", "Co60", nbins, Co60start, Co60end);
 
     
-  TCut cutCo60 = "Energy < 1450 && Energy > 1250";
+  TCut cutCo60 = "Energy < 1450 && Energy > 1250 && Included == 1";
   
   t1->Draw("Energy >> Co60", cutCo60, "goff");
 
@@ -186,9 +216,9 @@ int AnalyzeCo60ByTower() {
 
       integral_tower[tower-1] = Co60->Integral();
       
-      Rate[tower-1] = signal_tower[tower-1] * Co60->Integral();
+      Rate[tower-1] = signal_tower[tower-1] * Co60->Integral() / livetime_tower[tower-1];
       Tower[tower-1] = tower;
-      RateError[tower-1] = signalerror_tower[tower-1] * Co60->Integral();
+      RateError[tower-1] = signalerror_tower[tower-1] * Co60->Integral() / livetime_tower[tower-1];
       TowerError[tower-1] = 0;
     }
   

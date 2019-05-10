@@ -70,19 +70,21 @@ void set_plot_style()
 int AnalyzeK40AllTowers() {
 
   set_plot_style();
-  
+
   int nbins = 1000;
   int K40start = 1000;
   int K40end = 2000;
 
-  TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+  //TFile * f1 = new TFile("/projects/cuore/data/ds3018_3021/Reduced_bkg_3018_3021.root");
+    TFile * f1 = new TFile("/projects/cuore/data/TwoNu_DataRelease_Jan2019/Reduced_allDS_aggressive.root");
+
   TTree * t1 = (TTree*)f1->Get("outTree");
   
   TH1F* K40 = new TH1F("K40", "K40", nbins, K40start, K40end);
 
   TH2F* Towers_K40_hist = new TH2F("Towers_K40_hist", "Towers_K40_hist", 20, 0, 20, 14, 0, 14);
     
-  TCut cutK40 = "Energy < 1475 && Energy > 1445";
+  TCut cutK40 = "Energy > 1430 && Energy < 1490 && Included == 1";
   
   t1->Draw("Energy >> K40", cutK40, "goff");
   
@@ -160,19 +162,19 @@ int AnalyzeK40AllTowers() {
   //TCanvas *c2 = new TCanvas();
   //c2->Divide(5,3);
 
-  double livetimes[988]={0};
+  double livetimes[989]={0};
   // grab livetime info from txt file
   ifstream inFile;
-  inFile.open("exposures.txt");
+  inFile.open("livetimes_2nu_2019.dat");
   std::string line;
   while (std::getline(inFile, line))
     {
       std::istringstream iss(line);
-      int channel, ds;
+      int channel;
       double livetime;
-      if (!(iss >> channel >> ds >> livetime)) break;
+      if (!(iss >> channel >> livetime)) break;
       else {
-	cout << channel << "\t" << ds << "\t" << livetime << endl;
+	cout << channel << "\t" << livetime << endl;
 	livetimes[channel] += livetime;
       }
     }
@@ -185,13 +187,14 @@ int AnalyzeK40AllTowers() {
       for (int floor_i = 1; floor_i <=13; floor_i++)
 	{
 	// go over array by 13*tower + floor
-	channel = 52 * (tower_i - 1) + 4 * (floor_i-1);
+	channel = 52 * (tower_i - 1) + 4 * (floor_i-1) + 1;
 	cout << tower_i << "\t" << floor_i << "\t" << channel << endl;
 	int towerfloor = 13 * (tower_i-1) + (floor_i-1);
 	livetimes_towerfloor[towerfloor] = livetimes[channel] + livetimes[channel+1] + livetimes[channel+2] + livetimes[channel+3];
 	cout << channel << "\t" << livetimes_towerfloor[towerfloor] << endl;
 	}
     }
+  cout << "last channel: " << channel+3 << endl;
   // loop over all towers and floors
   
   for (int tower = 1; tower<=19; tower++)
@@ -255,7 +258,7 @@ int AnalyzeK40AllTowers() {
 	  towerfloor = 13 * (tower-1) + (floor-1);
 	  Rate[floor-1] = K40->Integral() / livetimes_towerfloor[towerfloor];
 	  Floor[floor-1] = floor;
-	  RateError[floor-1] = sqrt(K40->Integral());
+	  RateError[floor-1] = sqrt(K40->Integral()) / livetimes_towerfloor[towerfloor];
 	  FloorError[floor-1] = 0;
 
 	  Towers_K40_hist->Fill(tower, floor, Rate[floor-1]);

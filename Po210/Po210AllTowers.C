@@ -1,0 +1,286 @@
+{
+//=========Macro generated from canvas: c1_n4/c1_n4
+//=========  (Tue Apr  2 11:24:28 2019) by ROOT version5.34/28
+   TCanvas *c1_n4 = new TCanvas("c1_n4", "c1_n4",245,85,1262,820);
+   gStyle->SetOptTitle(0);
+   c1_n4->Range(-2.522,-2.5e-06,22.698,2.25e-05);
+   c1_n4->SetFillColor(0);
+   c1_n4->SetBorderMode(0);
+   c1_n4->SetBorderSize(2);
+   c1_n4->SetGridy();
+   c1_n4->SetFrameBorderMode(0);
+   c1_n4->SetFrameBorderMode(0);
+   
+   TGraphErrors *gre = new TGraphErrors(19);
+   gre->SetName("Graph0");
+   gre->SetTitle("Po210 summed");
+   gre->SetFillColor(1);
+   gre->SetMarkerStyle(7);
+   gre->SetPoint(0,1,9.873618e-06);
+   gre->SetPointError(0,0,1.261257e-07);
+   gre->SetPoint(1,2,8.716827e-06);
+   gre->SetPointError(1,0,1.150607e-07);
+   gre->SetPoint(2,3,1.598998e-05);
+   gre->SetPointError(2,0,1.471595e-07);
+   gre->SetPoint(3,4,1.189733e-05);
+   gre->SetPointError(3,0,1.194954e-07);
+   gre->SetPoint(4,5,1.602232e-05);
+   gre->SetPointError(4,0,1.4353e-07);
+   gre->SetPoint(5,6,1.16627e-05);
+   gre->SetPointError(5,0,1.194545e-07);
+   gre->SetPoint(6,7,1.12113e-05);
+   gre->SetPointError(6,0,1.326163e-07);
+   gre->SetPoint(7,8,1.258789e-05);
+   gre->SetPointError(7,0,1.194851e-07);
+   gre->SetPoint(8,9,1.066497e-05);
+   gre->SetPointError(8,0,1.188568e-07);
+   gre->SetPoint(9,10,9.671871e-06);
+   gre->SetPointError(9,0,1.162231e-07);
+   gre->SetPoint(10,11,1.605509e-05);
+   gre->SetPointError(10,0,1.452094e-07);
+   gre->SetPoint(11,12,1.486319e-05);
+   gre->SetPointError(11,0,1.519647e-07);
+   gre->SetPoint(12,13,8.782502e-06);
+   gre->SetPointError(12,0,1.264399e-07);
+   gre->SetPoint(13,14,7.967185e-06);
+   gre->SetPointError(13,0,1.166545e-07);
+   gre->SetPoint(14,15,9.035543e-06);
+   gre->SetPointError(14,0,1.099679e-07);
+   gre->SetPoint(15,16,1.073793e-05);
+   gre->SetPointError(15,0,1.220672e-07);
+   gre->SetPoint(16,17,8.504417e-06);
+   gre->SetPointError(16,0,1.044893e-07);
+   gre->SetPoint(17,18,6.463036e-06);
+   gre->SetPointError(17,0,1.366892e-07);
+   gre->SetPoint(18,19,6.179167e-06);
+   gre->SetPointError(18,0,9.894362e-08);
+   
+   TH1F *Graph_Graph1 = new TH1F("Graph_Graph1","Po210 summed",100,0,20.8);
+   Graph_Graph1->SetMinimum(0);
+   Graph_Graph1->SetMaximum(2e-05);
+   Graph_Graph1->SetDirectory(0);
+   Graph_Graph1->SetStats(0);
+
+   Int_t ci;      // for color index setting
+   TColor *color; // for color definition with alpha
+   ci = TColor::GetColor("#000099");
+   Graph_Graph1->SetLineColor(ci);
+   Graph_Graph1->GetXaxis()->SetTitle("Tower [DAQ]");
+   Graph_Graph1->GetXaxis()->SetRange(1,97);
+   Graph_Graph1->GetXaxis()->SetNdivisions(210);
+   Graph_Graph1->GetXaxis()->SetLabelFont(42);
+   Graph_Graph1->GetXaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetXaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetXaxis()->SetTitleFont(42);
+   Graph_Graph1->GetYaxis()->SetTitle("Rate [Hz]");
+   Graph_Graph1->GetYaxis()->SetLabelFont(42);
+   Graph_Graph1->GetYaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetYaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetYaxis()->SetTitleOffset(1.3);
+   Graph_Graph1->GetYaxis()->SetTitleFont(42);
+   Graph_Graph1->GetZaxis()->SetLabelFont(42);
+   Graph_Graph1->GetZaxis()->SetLabelSize(0.035);
+   Graph_Graph1->GetZaxis()->SetTitleSize(0.035);
+   Graph_Graph1->GetZaxis()->SetTitleFont(42);
+   gre->SetHistogram(Graph_Graph1);
+   
+   gre->Draw("ape");
+   
+   gre = new TGraphErrors(19);
+   gre->SetName("Graph1");
+   gre->SetTitle("Po210 #alpha peak");
+   gre->SetFillColor(1);
+
+   ci = TColor::GetColor("#00ffff");
+   gre->SetLineColor(ci);
+
+   ci = TColor::GetColor("#00ffff");
+   gre->SetMarkerColor(ci);
+   gre->SetMarkerStyle(6);
+   gre->SetPoint(0,1,6.718923e-06);
+   gre->SetPointError(0,0,1.261257e-07);
+   gre->SetPoint(1,2,5.415633e-06);
+   gre->SetPointError(1,0,1.150607e-07);
+   gre->SetPoint(2,3,8.259968e-06);
+   gre->SetPointError(2,0,1.471595e-07);
+   gre->SetPoint(3,4,6.886238e-06);
+   gre->SetPointError(3,0,1.194954e-07);
+   gre->SetPoint(4,5,9.316105e-06);
+   gre->SetPointError(4,0,1.4353e-07);
+   gre->SetPoint(5,6,7.483966e-06);
+   gre->SetPointError(5,0,1.194545e-07);
+   gre->SetPoint(6,7,5.756882e-06);
+   gre->SetPointError(6,0,1.326163e-07);
+   gre->SetPoint(7,8,8.403049e-06);
+   gre->SetPointError(7,0,1.194851e-07);
+   gre->SetPoint(8,9,6.282416e-06);
+   gre->SetPointError(8,0,1.188568e-07);
+   gre->SetPoint(9,10,6.019997e-06);
+   gre->SetPointError(9,0,1.162231e-07);
+   gre->SetPoint(10,11,8.113048e-06);
+   gre->SetPointError(10,0,1.452094e-07);
+   gre->SetPoint(11,12,7.892309e-06);
+   gre->SetPointError(11,0,1.519647e-07);
+   gre->SetPoint(12,13,5.169757e-06);
+   gre->SetPointError(12,0,1.264399e-07);
+   gre->SetPoint(13,14,4.984784e-06);
+   gre->SetPointError(13,0,1.166545e-07);
+   gre->SetPoint(14,15,5.491342e-06);
+   gre->SetPointError(14,0,1.099679e-07);
+   gre->SetPoint(15,16,6.598654e-06);
+   gre->SetPointError(15,0,1.220672e-07);
+   gre->SetPoint(16,16.98441,5.780856e-06);
+   gre->SetPointError(16,0,1.044893e-07);
+   gre->SetPoint(17,18,4.370105e-06);
+   gre->SetPointError(17,0,1.366892e-07);
+   gre->SetPoint(18,19,3.989837e-06);
+   gre->SetPointError(18,0,9.894362e-08);
+   
+   TH1F *Graph_Graph2 = new TH1F("Graph_Graph2","Po210 #alpha peak",100,0,20.8);
+   Graph_Graph2->SetMinimum(3.334019e-06);
+   Graph_Graph2->SetMaximum(1.001651e-05);
+   Graph_Graph2->SetDirectory(0);
+   Graph_Graph2->SetStats(0);
+
+   ci = TColor::GetColor("#000099");
+   Graph_Graph2->SetLineColor(ci);
+   Graph_Graph2->GetXaxis()->SetLabelFont(42);
+   Graph_Graph2->GetXaxis()->SetLabelSize(0.035);
+   Graph_Graph2->GetXaxis()->SetTitleSize(0.035);
+   Graph_Graph2->GetXaxis()->SetTitleFont(42);
+   Graph_Graph2->GetYaxis()->SetLabelFont(42);
+   Graph_Graph2->GetYaxis()->SetLabelSize(0.035);
+   Graph_Graph2->GetYaxis()->SetTitleSize(0.035);
+   Graph_Graph2->GetYaxis()->SetTitleFont(42);
+   Graph_Graph2->GetZaxis()->SetLabelFont(42);
+   Graph_Graph2->GetZaxis()->SetLabelSize(0.035);
+   Graph_Graph2->GetZaxis()->SetTitleSize(0.035);
+   Graph_Graph2->GetZaxis()->SetTitleFont(42);
+   gre->SetHistogram(Graph_Graph2);
+   
+   gre->Draw("p");
+   
+   gre = new TGraphErrors(19);
+   gre->SetName("Graph2");
+   gre->SetTitle("Po210 Q value Peak");
+   gre->SetFillColor(1);
+
+   ci = TColor::GetColor("#ff00ff");
+   gre->SetLineColor(ci);
+
+   ci = TColor::GetColor("#ff00ff");
+   gre->SetMarkerColor(ci);
+   gre->SetMarkerStyle(6);
+   gre->SetPoint(0,1,3.154695e-06);
+   gre->SetPointError(0,0,1.261257e-07);
+   gre->SetPoint(1,2,3.301194e-06);
+   gre->SetPointError(1,0,1.150607e-07);
+   gre->SetPoint(2,3,7.730011e-06);
+   gre->SetPointError(2,0,1.471595e-07);
+   gre->SetPoint(3,4,5.011087e-06);
+   gre->SetPointError(3,0,1.194954e-07);
+   gre->SetPoint(4,5,6.706219e-06);
+   gre->SetPointError(4,0,1.4353e-07);
+   gre->SetPoint(5,6,4.178739e-06);
+   gre->SetPointError(5,0,1.194545e-07);
+   gre->SetPoint(6,7,5.45442e-06);
+   gre->SetPointError(6,0,1.326163e-07);
+   gre->SetPoint(7,8,4.184846e-06);
+   gre->SetPointError(7,0,1.194851e-07);
+   gre->SetPoint(8,9,4.382551e-06);
+   gre->SetPointError(8,0,1.188568e-07);
+   gre->SetPoint(9,10,3.651874e-06);
+   gre->SetPointError(9,0,1.162231e-07);
+   gre->SetPoint(10,11,7.942039e-06);
+   gre->SetPointError(10,0,1.452094e-07);
+   gre->SetPoint(11,12,6.970876e-06);
+   gre->SetPointError(11,0,1.519647e-07);
+   gre->SetPoint(12,13,3.612746e-06);
+   gre->SetPointError(12,0,1.264399e-07);
+   gre->SetPoint(13,14,2.982401e-06);
+   gre->SetPointError(13,0,1.166545e-07);
+   gre->SetPoint(14,15,3.544201e-06);
+   gre->SetPointError(14,0,1.099679e-07);
+   gre->SetPoint(15,16,4.13928e-06);
+   gre->SetPointError(15,0,1.220672e-07);
+   gre->SetPoint(16,17,2.728273e-06);
+   gre->SetPointError(16,0,1.044893e-07);
+   gre->SetPoint(17,17.98679,2.096977e-06);
+   gre->SetPointError(17,0,1.366892e-07);
+   gre->SetPoint(18,19,2.18933e-06);
+   gre->SetPointError(18,0,9.894362e-08);
+   
+   TH1F *Graph_Graph3 = new TH1F("Graph_Graph3","Po210 Q value Peak",100,0,20.8);
+   Graph_Graph3->SetMinimum(1.343141e-06);
+   Graph_Graph3->SetMaximum(8.700349e-06);
+   Graph_Graph3->SetDirectory(0);
+   Graph_Graph3->SetStats(0);
+
+   ci = TColor::GetColor("#000099");
+   Graph_Graph3->SetLineColor(ci);
+   Graph_Graph3->GetXaxis()->SetLabelFont(42);
+   Graph_Graph3->GetXaxis()->SetLabelSize(0.035);
+   Graph_Graph3->GetXaxis()->SetTitleSize(0.035);
+   Graph_Graph3->GetXaxis()->SetTitleFont(42);
+   Graph_Graph3->GetYaxis()->SetLabelFont(42);
+   Graph_Graph3->GetYaxis()->SetLabelSize(0.035);
+   Graph_Graph3->GetYaxis()->SetTitleSize(0.035);
+   Graph_Graph3->GetYaxis()->SetTitleFont(42);
+   Graph_Graph3->GetZaxis()->SetLabelFont(42);
+   Graph_Graph3->GetZaxis()->SetLabelSize(0.035);
+   Graph_Graph3->GetZaxis()->SetTitleSize(0.035);
+   Graph_Graph3->GetZaxis()->SetTitleFont(42);
+   gre->SetHistogram(Graph_Graph3);
+   
+   gre->Draw("p");
+   
+   TLegend *leg = new TLegend(0.645469,0.6788413,0.8680445,0.8564232,NULL,"brNDC");
+   leg->SetBorderSize(1);
+   leg->SetLineColor(1);
+   leg->SetLineStyle(1);
+   leg->SetLineWidth(1);
+   leg->SetFillColor(0);
+   leg->SetFillStyle(1001);
+   TLegendEntry *entry=leg->AddEntry("Graph0","Po210 summed","pel");
+   entry->SetFillColor(1);
+   entry->SetFillStyle(1001);
+   entry->SetLineColor(1);
+   entry->SetLineStyle(1);
+   entry->SetLineWidth(1);
+   entry->SetMarkerColor(1);
+   entry->SetMarkerStyle(7);
+   entry->SetMarkerSize(1);
+   entry->SetTextFont(42);
+   entry=leg->AddEntry("Graph1","Po210 #alpha peak","pel");
+   entry->SetFillColor(1);
+   entry->SetFillStyle(1001);
+
+   ci = TColor::GetColor("#00ffff");
+   entry->SetLineColor(ci);
+   entry->SetLineStyle(1);
+   entry->SetLineWidth(1);
+
+   ci = TColor::GetColor("#00ffff");
+   entry->SetMarkerColor(ci);
+   entry->SetMarkerStyle(6);
+   entry->SetMarkerSize(1);
+   entry->SetTextFont(42);
+   entry=leg->AddEntry("Graph2","Po210 Q value Peak","pel");
+   entry->SetFillColor(1);
+   entry->SetFillStyle(1001);
+
+   ci = TColor::GetColor("#ff00ff");
+   entry->SetLineColor(ci);
+   entry->SetLineStyle(1);
+   entry->SetLineWidth(1);
+
+   ci = TColor::GetColor("#ff00ff");
+   entry->SetMarkerColor(ci);
+   entry->SetMarkerStyle(6);
+   entry->SetMarkerSize(1);
+   entry->SetTextFont(42);
+   leg->Draw();
+   c1_n4->Modified();
+   c1_n4->cd();
+   c1_n4->SetSelected(c1_n4);
+}
